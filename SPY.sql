@@ -68,7 +68,14 @@ ORDER  BY avg_price
 --typically the worst day (or best day to buy) in the weekly low
 --best to buy on modays you save about 7 cents
 SELECT Format(date, 'dddd') AS Dayname,
-       Avg(open1-close1)          AS avg_volume
+       Avg(open1-close1)          AS avg_discount
 FROM   spy.dbo.spy$
 GROUP  BY Format(date, 'dddd')
-ORDER  BY avg_volume DESC
+ORDER  BY avg_discount DESC
+
+--Best time to buy using average
+SELECT Format(date, 'dddd') AS Dayname,
+       Avg(low)-(Avg(low)-Avg(open1-close1)*-1)          AS avg_discount
+FROM   spy.dbo.spy$
+GROUP  BY Format(date, 'dddd')
+ORDER  BY avg_discount DESC
